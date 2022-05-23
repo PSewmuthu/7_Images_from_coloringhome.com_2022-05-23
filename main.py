@@ -60,36 +60,33 @@ def greb_images():
                     for img in images:
                         url = f"https://coloringhome.com{img.find('a').find('img')['src']}"
 
-                        try:
-                            ext = url[url.rindex('.'):]
-                            if ext.startswith('.png'):
-                                ext = '.png'
-                            elif ext.startswith('.jpg'):
-                                ext = '.jpg'
-                            elif ext.startswith('.jfif'):
-                                ext = '.jfif'
-                            elif ext.startswith('.com'):
-                                ext = '.jpg'
-                            elif ext.startswith('.svg'):
-                                ext = '.svg'
+                        ext = url[url.rindex('.'):]
+                        if ext.startswith('.png'):
+                            ext = '.png'
+                        elif ext.startswith('.jpg'):
+                            ext = '.jpg'
+                        elif ext.startswith('.jfif'):
+                            ext = '.jfif'
+                        elif ext.startswith('.com'):
+                            ext = '.jpg'
+                        elif ext.startswith('.svg'):
+                            ext = '.svg'
 
-                            j = ''
-                            if len(str(i)) == 1:
-                                j = f"00{i}"
-                            elif len(str(i)) == 2:
-                                j = f"0{i}"
-                            else:
-                                j = str(i)
+                        j = ''
+                        if len(str(i)) == 1:
+                            j = f"00{i}"
+                        elif len(str(i)) == 2:
+                            j = f"0{i}"
+                        else:
+                            j = str(i)
 
-                            data = requests.get(url, stream=True)
-                            filename = f"{name}.{str(j)}{ext}"
+                        data = requests.get(url, stream=True)
+                        filename = f"{name}.{str(j)}{ext}"
 
-                            with open(f"img/{header}/{name}/{filename}", 'wb') as file:
-                                shutil.copyfileobj(data.raw, file)
+                        with open(f"img/{header}/{name}/{filename}", 'wb') as file:
+                            shutil.copyfileobj(data.raw, file)
 
-                            i += 1
-                        except:
-                            pass
+                        i += 1
         else:
             return "Error"
     except:
