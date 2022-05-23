@@ -24,7 +24,7 @@ def get_links():
             attrs = soup.find_all('div', {"class": "catts"})
             for header in header_list:
                 links = {}
-                for a in attrs[header_list.index(header)].find("div", {"class": "catt catred"}).find("p").find("a"):
+                for a in attrs[header_list.index(header)].find("div").find("p").find("a"):
                     links[f"https://coloringhome.com{a['href']}"] = a.string
 
                 link_list[header] = links
