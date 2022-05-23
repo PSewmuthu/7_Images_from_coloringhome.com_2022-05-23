@@ -17,17 +17,23 @@ def get_links():
 
         header_list = []
         for header in soup.find_all('h2', {"class": "ctitle"}):
-            header_list.append(header.string.replace('&amp;', '&'))
+            if '&amp;' in header.string:
+                header_list.append(header.string.replace('&amp;', '&'))
+            else:
+                header_list.append(header.string)
 
         link_list = {}
-        for div in soup.find_all('div', {"class": "catts"}):
-            attrs = soup.find_all('div', {"class": "catts"})
-            for header in header_list:
-                links = {}
-                for a in attrs[header_list.index(header)].find("div").find("p").find("a"):
+        attrs = soup.find_all('div', {"class": "catts"})
+        for header in header_list:
+            links = {}
+            for div in attrs[header_list.index(header)].find_all("div"):
+                try:
+                    a = div.find('p').find('a')
                     links[f"https://coloringhome.com{a['href']}"] = a.string
+                except:
+                    pass
 
-                link_list[header] = links
+            link_list[header] = links
 
         return link_list
     except:
@@ -52,7 +58,7 @@ def greb_images():
 
                     i = 1
                     for img in images:
-                        url = f"https://coloringhome.com{img['src']}"
+                        url = f"https://coloringhome.com{img.find('a').find('img')['src']}"
 
                         try:
                             ext = url[url.rindex('.'):]
@@ -67,13 +73,16 @@ def greb_images():
                             elif ext.startswith('.svg'):
                                 ext = '.svg'
 
+                            j = ''
                             if len(str(i)) == 1:
-                                i = f"00{i}"
+                                j = f"00{i}"
                             elif len(str(i)) == 2:
-                                i = f"0{i}"
+                                j = f"0{i}"
+                            else:
+                                j = str(i)
 
                             data = requests.get(url, stream=True)
-                            filename = f"{name}.{str(i)}{ext}"
+                            filename = f"{name}.{str(j)}{ext}"
 
                             with open(f"img/{header}/{name}/{filename}", 'wb') as file:
                                 shutil.copyfileobj(data.raw, file)
