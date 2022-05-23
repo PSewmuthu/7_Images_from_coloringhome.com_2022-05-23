@@ -85,3 +85,10 @@ def greb_images():
             return "Error"
     except:
         return "Error"
+
+
+res = greb_images()
+if res == "Error":
+    print("\nError Occured!")
+else:
+    print("\nTask completed successfully!")
