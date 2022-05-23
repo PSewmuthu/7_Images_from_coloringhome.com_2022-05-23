@@ -27,3 +27,5 @@ def get_links():
                 links[f"https://coloringhome.com{a['href']}"] = a.string
 
             link_list[header] = links
+
+    return link_list
