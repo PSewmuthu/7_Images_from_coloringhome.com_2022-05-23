@@ -36,6 +36,25 @@ def get_links():
 
             link_list[header] = links
 
+        file = open('links.txt', 'r')
+
+        hidden = {}
+        for link in file.readlines():
+            page = requests.get(link).text
+            tags = BeautifulSoup(page, 'lxml')
+
+            for div in tags.find_all('div', {"class": "catts"}):
+                for div2 in div.find_all('div'):
+                    try:
+                        a = div2.find('p').find('a')
+                        hidden[f"https://coloringhome.com{a['href']}"] = a.string.strip()
+                    except:
+                        pass
+
+            link_list['Hidden'] = hidden
+
+        file.close()
+
         return link_list
     except:
         return "Error"
